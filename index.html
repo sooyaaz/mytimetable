@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Study Timetable — Week 13 & 14</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@1,400;1,600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0D1B2A;
+    --bg2: #112036;
+    --card: #162840;
+    --card2: #1A3050;
+    --lavender: #C8B8E8;
+    --lavender-soft: #E8DFFF;
+    --mint: #5FFFD4;
+    --coral: #FF7B7B;
+    --gold: #FFD166;
+    --sky: #74C0FC;
+    --rose: #FF9DB5;
+    --sage: #90E0A0;
+    --text: #E8F0FE;
+    --muted: #8899AA;
+    --border: rgba(200,184,232,0.15);
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* === HERO === */
+  .hero {
+    position: relative;
+    padding: 60px 40px 40px;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -120px; left: 50%; transform: translateX(-50%);
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(200,184,232,0.12) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    background: rgba(200,184,232,0.1);
+    border: 1px solid var(--border);
+    color: var(--lavender);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 100px;
+    margin-bottom: 20px;
+  }
+
+  .hero h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(32px, 5vw, 58px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -1px;
+    background: linear-gradient(135deg, #E8DFFF 0%, #C8B8E8 40%, #74C0FC 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 12px;
+  }
+
+  .hero-sub {
+    font-size: 14px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    margin-bottom: 40px;
+  }
+
+  /* === QUOTE CAROUSEL === */
+  .quote-box {
+    max-width: 560px;
+    margin: 0 auto 50px;
+    background: rgba(200,184,232,0.06);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px 28px;
+    position: relative;
+  }
+
+  .quote-box::before {
+    content: '"';
+    font-family: 'Playfair Display', serif;
+    font-size: 80px;
+    color: var(--lavender);
+    opacity: 0.2;
+    position: absolute;
+    top: -10px; left: 14px;
+    line-height: 1;
+  }
+
+  .quote-text {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--lavender-soft);
+    line-height: 1.7;
+    margin-bottom: 10px;
+    min-height: 50px;
+    transition: opacity 0.5s;
+  }
+
+  .quote-author {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* === LEGEND === */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 50px;
+    padding: 0 40px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 7px 14px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .legend-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* === WEEK HEADERS === */
+  .week-section {
+    padding: 0 30px 50px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .week-label {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .week-label h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--lavender);
+    letter-spacing: -0.5px;
+  }
+
+  .week-label .week-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .week-label .week-tag {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  /* === DAY GRID === */
+  .day-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+  }
+
+  /* === DAY CARD === */
+  .day-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .day-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+  }
+
+  .day-card.today {
+    border-color: rgba(200,184,232,0.4);
+    box-shadow: 0 0 0 1px rgba(200,184,232,0.2), 0 8px 32px rgba(200,184,232,0.08);
+  }
+
+  .day-head {
+    padding: 16px 18px 14px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .day-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+  }
+
+  .day-date {
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  .today-badge {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    background: var(--lavender);
+    color: #0D1B2A;
+    padding: 3px 8px;
+    border-radius: 100px;
+  }
+
+  /* === EVENTS === */
+  .events {
+    padding: 14px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .event {
+    border-radius: 12px;
+    padding: 12px 14px;
+    position: relative;
+    overflow: hidden;
+    cursor: default;
+    transition: filter 0.2s;
+  }
+
+  .event:hover { filter: brightness(1.08); }
+
+  .event::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    opacity: 0.12;
+    border-radius: 12px;
+  }
+
+  .event.class { background: rgba(116,192,252,0.15); border: 1px solid rgba(116,192,252,0.3); }
+  .event.class .evt-label { color: var(--sky); }
+
+  .event.urgent { background: rgba(255,123,123,0.15); border: 1px solid rgba(255,123,123,0.3); }
+  .event.urgent .evt-label { color: var(--coral); }
+
+  .event.prep { background: rgba(255,209,102,0.13); border: 1px solid rgba(255,209,102,0.28); }
+  .event.prep .evt-label { color: var(--gold); }
+
+  .event.study { background: rgba(200,184,232,0.13); border: 1px solid rgba(200,184,232,0.28); }
+  .event.study .evt-label { color: var(--lavender); }
+
+  .event.free { background: rgba(95,255,212,0.08); border: 1px solid rgba(95,255,212,0.2); }
+  .event.free .evt-label { color: var(--mint); }
+
+  .event.assignment { background: rgba(255,157,181,0.13); border: 1px solid rgba(255,157,181,0.28); }
+  .event.assignment .evt-label { color: var(--rose); }
+
+  .event.rest { background: rgba(144,224,160,0.1); border: 1px solid rgba(144,224,160,0.2); }
+  .event.rest .evt-label { color: var(--sage); }
+
+  .evt-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .evt-label .dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: currentColor;
+    flex-shrink: 0;
+  }
+
+  .evt-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .evt-time {
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  .evt-note {
+    font-size: 10.5px;
+    color: rgba(200,200,220,0.6);
+    margin-top: 5px;
+    line-height: 1.4;
+    font-style: italic;
+  }
+
+  .evt-priority {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 100px;
+    margin-top: 5px;
+  }
+
+  .priority-high { background: rgba(255,123,123,0.25); color: var(--coral); }
+  .priority-med { background: rgba(255,209,102,0.2); color: var(--gold); }
+  .priority-low { background: rgba(95,255,212,0.15); color: var(--mint); }
+
+  .no-event {
+    text-align: center;
+    padding: 28px 12px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .no-event .rest-icon { font-size: 28px; display: block; margin-bottom: 6px; }
+
+  /* === DIVIDER === */
+  .week-divider {
+    margin: 10px 30px 50px;
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(200,184,232,0.3), transparent);
+  }
+
+  /* === PROGRESS SECTION === */
+  .progress-section {
+    max-width: 1400px;
+    margin: 0 auto 60px;
+    padding: 0 30px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+  }
+
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .stat-label {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 500;
+  }
+
+  .stat-sub {
+    font-size: 10px;
+    color: rgba(136,153,170,0.6);
+    margin-top: 4px;
+  }
+
+  /* === FOOTER === */
+  footer {
+    text-align: center;
+    padding: 40px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  footer span { color: var(--lavender); }
+
+  /* === ANIMATIONS === */
+  @keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .day-card {
+    animation: fadeSlideUp 0.5s ease both;
+  }
+
+  .day-grid .day-card:nth-child(1) { animation-delay: 0.05s; }
+  .day-grid .day-card:nth-child(2) { animation-delay: 0.10s; }
+  .day-grid .day-card:nth-child(3) { animation-delay: 0.15s; }
+  .day-grid .day-card:nth-child(4) { animation-delay: 0.20s; }
+  .day-grid .day-card:nth-child(5) { animation-delay: 0.25s; }
+  .day-grid .day-card:nth-child(6) { animation-delay: 0.30s; }
+
+  @keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 0 0 1px rgba(200,184,232,0.2), 0 8px 32px rgba(200,184,232,0.05); }
+    50% { box-shadow: 0 0 0 1px rgba(200,184,232,0.4), 0 8px 40px rgba(200,184,232,0.15); }
+  }
+
+  .day-card.today { animation: fadeSlideUp 0.5s ease both, pulseGlow 3s ease-in-out infinite; }
+
+  @media (max-width: 700px) {
+    .hero { padding: 40px 20px 30px; }
+    .week-section, .progress-section { padding: 0 14px; }
+    .legend { padding: 0 14px; }
+    .day-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">📅 Academic Sprint Mode</div>
+  <h1>Week 13 → 14<br>Let's Get It Done.</h1>
+  <p class="hero-sub">Tuesday, 1 July — Tuesday, 8 July 2025 &nbsp;·&nbsp; Sem 3 Final Push</p>
+
+  <div class="quote-box">
+    <div class="quote-text" id="quoteText">You don't have to be great to get started, but you have to get started to be great.</div>
+    <div class="quote-author" id="quoteAuthor">— Les Brown</div>
+  </div>
+</div>
+
+<!-- LEGEND -->
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:var(--sky)"></div>Class / Lecture</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--coral)"></div>Test / Exam</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--gold)"></div>Study Session</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--lavender)"></div>Preparation / Hafal</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--rose)"></div>Assignment Work</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--mint)"></div>Free / Rest Time</div>
+</div>
+
+<!-- STATS -->
+<div class="progress-section">
+  <div class="stat-card">
+    <div class="stat-num" style="color:var(--coral)">4</div>
+    <div class="stat-label">Tests / Exams</div>
+    <div class="stat-sub">Final test, Python test, Gamification test, LCC</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-num" style="color:var(--rose)">2</div>
+    <div class="stat-label">Presentations</div>
+    <div class="stat-sub">LCC objectives + IMC451 Architecture</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-num" style="color:var(--lavender)">1</div>
+    <div class="stat-label">Roleplay</div>
+    <div class="stat-sub">Mandarin script hafal</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-num" style="color:var(--mint)">7</div>
+    <div class="stat-label">Days to Conquer</div>
+    <div class="stat-sub">Then Sem 3 is done! 🎉</div>
+  </div>
+</div>
+
+<!-- ════════════ WEEK 13 ════════════ -->
+<div class="week-section">
+  <div class="week-label">
+    <h2>📖 Week 13</h2>
+    <div class="week-line"></div>
+    <div class="week-tag">1 Jul — 5 Jul</div>
+  </div>
+
+  <div class="day-grid">
+
+    <!-- TUESDAY 1 JUL -->
+    <div class="day-card today">
+      <div class="day-head">
+        <div>
+          <div class="day-name">Tuesday</div>
+          <div class="day-date">1 July</div>
+        </div>
+        <span class="today-badge">Today</span>
+      </div>
+      <div class="events">
+        <div class="event class">
+          <div class="evt-label"><span class="dot"></span>Class</div>
+          <div class="evt-title">IMC501 Lecture</div>
+          <div class="evt-time">🕘 9:00 AM — 10:00 AM</div>
+        </div>
+        <div class="event class">
+          <div class="evt-label"><span class="dot"></span>Class</div>
+          <div class="evt-title">Python Class</div>
+          <div class="evt-time">🕐 11:00 AM — 2:00 PM</div>
+        </div>
+        <div class="event prep">
+          <div class="evt-label"><span class="dot"></span>Study Session</div>
+          <div class="evt-title">Gamification: Chapter 1–3</div>
+          <div class="evt-time">🕒 3:00 PM — 5:00 PM</div>
+          <div class="evt-note">Skim slides (avg 5 slides/chapter). Jot key terms.</div>
+          <span class="evt-priority priority-high">⚡ High Priority</span>
+        </div>
+        <div class="event prep">
+          <div class="evt-label"><span class="dot"></span>Study Session</div>
+          <div class="evt-title">Final Test: Ch 6–7 (Review)</div>
+          <div class="evt-time">🕖 6:00 PM — 8:00 PM</div>
+          <div class="evt-note">You already did Ch 1–5. Push through Ch 6 & 7 tonight.</div>
+          <span class="evt-priority priority-high">⚡ High Priority</span>
+        </div>
+        <div class="event free">
+          <div class="evt-label"><span class="dot"></span>Rest</div>
+          <div class="evt-title">Wind Down</div>
+          <div class="evt-time">🌙 10:00 PM — 1:00 AM (limit)</div>
+          <div class="evt-note">Light review only. Sleep is study too.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WEDNESDAY 2 JUL -->
+    <div class="day-card">
+      <div class="day-head">
+        <div>
+          <div class="day-name">Wednesday</div>
+          <div class="day-date">2 July</div>
+        </div>
+      </div>
+      <div class="events">
+        <div class="event prep">
+          <div class="evt-label"><span class="dot"></span>Preparation</div>
+          <div class="evt-title">Mandarin Script Hafal — Round 1</div>
+          <div class="evt-time">🕗 7:30 AM — 9:30 AM</div>
+          <div class="evt-note">Morning = best memory retention! Read aloud, repeat.</div>
+          <span class="evt-priority priority-high">⚡ Roleplay 12PM</span>
+        </div>
+        <div class="event prep">
+          <div class="evt-label"><span class="dot"></span>Preparation</div>
+          <div class="evt-title">LCC Presentation — Hafal Objectives</div>
+          <div class="evt-time">🕙 9:30 AM — 11:30 AM</div>
+          <div class="evt-note">Understand your part, then practise saying it fluently. No reading.</div>
+          <span class="evt-priority priority-high">⚡ Present at 2PM</span>
+        </div>
+        <div class="event class">
+          <div class="evt-label"><span class="dot"></span>Roleplay</div>
+          <div class="evt-title">Bahasa Mandarin Roleplay</div>
+          <div class="evt-time">🕛 12:00 PM — 2:00 PM</div>
+          <div class="evt-note">You got this. Breathe. Hafal sudah ✅</div>
+        </div>
+        <div class="event urgent">
+          <div class="evt-label"><span class="dot"></span>Presentation</div>
+          <div class="evt-title">LCC Presentation — Your Part</div>
+          <div class="evt-time">🕑 2:00 PM — (end)</div>
+          <div class="evt-note">Present objectives with confidence. No script, cakap natural.</div>
+          <span class="evt-priority priority-high">⚡ Graded</span>
+        </div>
+        <div class="event prep">
+          <div class="evt-label"><span class="dot"></span>Study Session</div>
+          <div class="evt-title">Final Test: Ch 8 + Full Review (3 sets)</div>
+          <div class="evt-time">🕔 4:30 PM — 7:30 PM</div>
+          <div class="evt-note">Final chapter, then drill all 3 sets of past questions!</div>
+          <span class="evt-priority priority-high">⚡ Test tmr 4PM</span>
+        </div>
+        <div class="event free">
+          <div class="evt-label"><span class="dot"></span>Rest</div>
+          <div class="evt-title">Relax + Light Revision</div>
+          <div class="evt-time">🌙 9:00 PM — 1:00 AM (limit)</div>
+          <div class="evt-note">Don't burn out. Quick recap notes only.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- THURSDAY 3 JUL -->
+    <div class="day-card">
+      <div class="day-head">
+        <div>
+          <div class="day-name">Thursday</div>
+          <div class="day-date">3 July</div>
+        </div>
+      </div>
+      <div class="events">
+        <div class="event prep">
+          <div class="evt-label"><span class="dot"></span>Study Session</div>
+          <div class="evt-title">Final Test: Last Review (All Chapters)</div>
+          <div class="evt-time">🕗 8:00 AM — 12:00 PM</div>
+          <div class="evt-note">Focus on weak areas. Drill sets again. Summarise key points.</div>
+          <span class="evt-priority priority-high">⚡ Test at 4PM</span>
+        </div>
+        <div class="event free">
+          <div class="evt-label"><span class="dot"></span>Break</div>
+          <div class="evt-title">Lunch + Rest + Mental Prep</div>
+          <div class="evt-time">🕛 12:00 PM — 3:30 PM</div>
+          <div class="evt-note">Eat well, rest eyes, light review notes only. Trust yourself.</div>
+        </div>
+        <div class="event urgent">
+          <div class="evt-label"><span class="dot"></span>FINAL TEST</div>
+          <div class="evt-title">Final Test — 40 Questions</div>
+          <div class="evt-time">🕓 4:00 PM — 6:00 PM</div>
+          <div class="evt-note">8 chapters, 3 sets practised. You are READY.</div>
+          <span class="evt-priority priority-high">⚡ Exam</span>
+        </div>
+        <div class="event free">
+          <div class="evt-label"><span class="dot"></span>You Deserve Rest</div>
+          <div class="evt-title">Free Time 🎉</div>
+          <div class="evt-time">🌙 6:00 PM onwards</div>
+          <div class="evt-note">Test done. Celebrate. Sleep early.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FRIDAY 4 JUL -->
+    <div class="day-card">
+      <div class="day-head">
+        <div>
+          <div class="day-name">Friday</div>
+          <div class="day-date">4 July</div>
+        </div>
+      </div>
+      <div class="events">
+        <div class="event prep">
+          <div class="evt-label"><span class="dot"></span>Study Session</div>
+          <div class="evt-title">Gamification: Chapter 4–7</div>
+          <div class="evt-time">🕗 8:00 AM — 12:00 PM</div>
+          <div class="evt-note">4 chapters in the morning. Avg 5 slides = manageable. Speed read + notes.</div>
+          <span class="evt-priority priority-high">⚡ Test manana</span>
+        </div>
+        <div class="event urgent">
+          <div class="evt-label"><span class="dot"></span>TEST PREP</div>
+          <div class="evt-title">Gamification: Chapter 8–10</div>
+          <div class="evt-time">🕐 1:00 PM — 5:00 PM</div>
+          <div class="evt-note">Last 3 chapters. Compile summary sheet after each one.</div>
+          <span class="evt-priority priority-high">⚡ High Priority</span>
+        </div>
+        <div class="event assignment">
+          <div class="evt-label"><span class="dot"></span>Assignment</div>
+          <div class="evt-title">IMC451 Phase 2: IA Framework — Start Draft</div>
+          <div class="evt-time">🕖 6:00 PM — 8:00 PM</div>
+          <div class="evt-note">Start your part while fresh. Outline the IA Framework structure.</div>
+          <span class="evt-priority priority-med">📌 Due Monday</span>
+        </div>
+        <div class="event free">
+          <div class="evt-label"><span class="dot"></span>Rest</div>
+          <div class="evt-title">Wind Down</div>
+          <div class="evt-time">🌙 9:00 PM — 1:00 AM (limit)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SATURDAY 5 JUL -->
+    <div class="day-card">
+      <div class="day-head">
+        <div>
+          <div class="day-name">Saturday</div>
+          <div class="day-date">5 July</div>
+        </div>
+      </div>
+      <div class="events">
+        <div class="event urgent">
+          <div class="evt-label"><span class="dot"></span>TEST DAY</div>
+          <div class="evt-title">Gamification Subject Test</div>
+          <div class="evt-time">🕗 Morning (check slot)</div>
+          <div class="evt-note">10 chapters studied ✅ Walk in confident.</div>
+          <span class="evt-priority priority-high">⚡ Exam</span>
+        </div>
+        <div class="event assignment">
+          <div class="evt-label"><span class="dot"></span>Assignment</div>
+          <div class="evt-title">IMC451 Phase 2: IA Framework — Write + Refine</div>
+          <div class="evt-time">🕑 2:00 PM — 6:00 PM</div>
+          <div class="evt-note">Flesh out your section after the test. Use energy while memory is fresh.</div>
+          <span class="evt-priority priority-high">⚡ Due Monday</span>
+        </div>
+        <div class="event prep">
+          <div class="evt-label"><span class="dot"></span>Presentation Prep</div>
+          <div class="evt-title">IMC451 Presentation Slides — Draft</div>
+          <div class="evt-time">🕖 7:00 PM — 9:00 PM</div>
+          <div class="evt-note">Prepare your slides for Monday. Don't wait last minute.</div>
+          <span class="evt-priority priority-med">📌 Pres Monday 3PM</span>
+        </div>
+        <div class="event free">
+          <div class="evt-label"><span class="dot"></span>Rest</div>
+          <div class="evt-title">You've Earned It 😴</div>
+          <div class="evt-time">🌙 9:00 PM onwards</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end week 13 grid -->
+</div>
+
+<hr class="week-divider">
+
+<!-- ════════════ WEEK 14 ════════════ -->
+<div class="week-section">
+  <div class="week-label">
+    <h2>🏁 Week 14</h2>
+    <div class="week-line"></div>
+    <div class="week-tag">6 Jul — 8 Jul · Final Lap</div>
+  </div>
+
+  <div class="day-grid">
+
+    <!-- SUNDAY 6 JUL -->
+    <div class="day-card">
+      <div class="day-head">
+        <div>
+          <div class="day-name">Sunday</div>
+          <div class="day-date">6 July</div>
+        </div>
+      </div>
+      <div class="events">
+        <div class="event assignment">
+          <div class="evt-label"><span class="dot"></span>Assignment</div>
+          <div class="evt-title">IMC451: Finalise Phase 2 IA Framework</div>
+          <div class="evt-time">🕙 10:00 AM — 1:00 PM</div>
+          <div class="evt-note">Polish your section, make sure it's complete and presentable.</div>
+          <span class="evt-priority priority-high">⚡ Submit to group</span>
+        </div>
+        <div class="event prep">
+          <div class="evt-label"><span class="dot"></span>Presentation Prep</div>
+          <div class="evt-title">Practise IMC451 Presentation</div>
+          <div class="evt-time">🕑 2:00 PM — 4:00 PM</div>
+          <div class="evt-note">Say it out loud. Time yourself. Know your slides cold.</div>
+          <span class="evt-priority priority-high">⚡ Pres tmr 3PM</span>
+        </div>
+        <div class="event prep">
+          <div class="evt-label"><span class="dot"></span>Study Session</div>
+          <div class="evt-title">Python Test Prep — Chapters 1–4</div>
+          <div class="evt-time">🕔 5:00 PM — 8:00 PM</div>
+          <div class="evt-note">Start early on Python — test Tuesday! Cover first half tonight.</div>
+          <span class="evt-priority priority-high">⚡ Test Tue 2PM</span>
+        </div>
+        <div class="event free">
+          <div class="evt-label"><span class="dot"></span>Rest</div>
+          <div class="evt-title">Final Wind Down</div>
+          <div class="evt-time">🌙 9:00 PM — 1:00 AM (limit)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MONDAY 7 JUL -->
+    <div class="day-card">
+      <div class="day-head">
+        <div>
+          <div class="day-name">Monday</div>
+          <div class="day-date">7 July</div>
+        </div>
+      </div>
+      <div class="events">
+        <div class="event prep">
+          <div class="evt-label"><span class="dot"></span>Study Session</div>
+          <div class="evt-title">Python Test Prep — Chapters 5–7</div>
+          <div class="evt-time">🕗 8:00 AM — 11:00 AM</div>
+          <div class="evt-note">Middle chapters. Focus on syntax, functions, logic. Practice code.</div>
+          <span class="evt-priority priority-high">⚡ Test tmr</span>
+        </div>
+        <div class="event prep">
+          <div class="evt-label"><span class="dot"></span>Presentation Rehearsal</div>
+          <div class="evt-title">Final Practise: IMC451 Pres</div>
+          <div class="evt-time">🕛 11:30 AM — 1:00 PM</div>
+          <div class="evt-note">Run through one more time. Chill after. You're ready.</div>
+          <span class="evt-priority priority-high">⚡ Present at 3PM</span>
+        </div>
+        <div class="event free">
+          <div class="evt-label"><span class="dot"></span>Break</div>
+          <div class="evt-title">Lunch + Mental Prep</div>
+          <div class="evt-time">🕐 1:00 PM — 2:45 PM</div>
+          <div class="evt-note">Eat, rest eyes, dress well. Confidence = performance.</div>
+        </div>
+        <div class="event urgent">
+          <div class="evt-label"><span class="dot"></span>PRESENTATION</div>
+          <div class="evt-title">IMC451 Architecture Presentation</div>
+          <div class="evt-time">🕒 3:00 PM — 5:00 PM</div>
+          <div class="evt-note">Phase 2: IA Framework — your part. Deliver it strong!</div>
+          <span class="evt-priority priority-high">⚡ Graded</span>
+        </div>
+        <div class="event prep">
+          <div class="evt-label"><span class="dot"></span>Study Session</div>
+          <div class="evt-title">Python Test Prep — Chapters 8–9</div>
+          <div class="evt-time">🕖 6:00 PM — 9:00 PM</div>
+          <div class="evt-note">Final chapters. Drill code. Last push before the test tomorrow.</div>
+          <span class="evt-priority priority-high">⚡ Test tmr 2PM</span>
+        </div>
+        <div class="event free">
+          <div class="evt-label"><span class="dot"></span>Wind Down</div>
+          <div class="evt-title">Sleep Early Tonight</div>
+          <div class="evt-time">🌙 10:00 PM — 1:00 AM (limit)</div>
+          <div class="evt-note">Rest = performance. No late night cramming tonight.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TUESDAY 8 JUL -->
+    <div class="day-card" style="border-color:rgba(95,255,212,0.3); box-shadow: 0 0 30px rgba(95,255,212,0.06);">
+      <div class="day-head">
+        <div>
+          <div class="day-name" style="color:var(--mint)">Tuesday</div>
+          <div class="day-date">8 July</div>
+        </div>
+        <span class="today-badge" style="background:var(--mint); color:#0D1B2A;">FINAL DAY</span>
+      </div>
+      <div class="events">
+        <div class="event prep">
+          <div class="evt-label"><span class="dot"></span>Last Review</div>
+          <div class="evt-title">Python: Quick Revision All Chapters</div>
+          <div class="evt-time">🕗 8:00 AM — 12:00 PM</div>
+          <div class="evt-note">Scan notes, run small code examples, review error types. Light revision only.</div>
+          <span class="evt-priority priority-med">📌 Test 2PM</span>
+        </div>
+        <div class="event free">
+          <div class="evt-label"><span class="dot"></span>Break</div>
+          <div class="evt-title">Lunch + Mental Prep</div>
+          <div class="evt-time">🕛 12:00 PM — 1:45 PM</div>
+          <div class="evt-note">Eat properly. Clear your head. You've put in the work.</div>
+        </div>
+        <div class="event urgent">
+          <div class="evt-label"><span class="dot"></span>PYTHON TEST</div>
+          <div class="evt-title">Python Test — 9 Chapters</div>
+          <div class="evt-time">🕑 2:00 PM — 5:00 PM</div>
+          <div class="evt-note">Final test of Sem 3. Code with confidence. You got this! 💪</div>
+          <span class="evt-priority priority-high">⚡ Final Exam</span>
+        </div>
+        <div class="event rest">
+          <div class="evt-label"><span class="dot"></span>🎉 SEM 3 DONE!</div>
+          <div class="evt-title">Celebrate — You Made It!</div>
+          <div class="evt-time">🌟 5:00 PM onwards</div>
+          <div class="evt-note">Sem 3 is officially OVER. Rest, reward yourself, celebrate big. You earned it!</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end week 14 grid -->
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>Built for <span>Xen</span> · Sem 3 Final Sprint ·  Keep going — the finish line is closer than you think 🌙</p>
+</footer>
+
+<script>
+  const quotes = [
+    { text: "You don't have to be great to get started, but you have to get started to be great.", author: "Les Brown" },
+    { text: "It always seems impossible until it's done.", author: "Nelson Mandela" },
+    { text: "Success is the sum of small efforts repeated day in and day out.", author: "Robert Collier" },
+    { text: "Don't watch the clock. Do what it does — keep going.", author: "Sam Levenson" },
+    { text: "The secret of getting ahead is getting started.", author: "Mark Twain" },
+    { text: "Push yourself, because no one else is going to do it for you.", author: "Unknown" },
+    { text: "Great things are done by a series of small things brought together.", author: "Vincent Van Gogh" },
+    { text: "You are closer than you were yesterday.", author: "Unknown" },
+    { text: "Hard work beats talent when talent doesn't work hard.", author: "Tim Notke" },
+    { text: "Believe you can and you're halfway there.", author: "Theodore Roosevelt" }
+  ];
+
+  let current = 0;
+  const qText = document.getElementById('quoteText');
+  const qAuthor = document.getElementById('quoteAuthor');
+
+  function rotateQuote() {
+    qText.style.opacity = '0';
+    setTimeout(() => {
+      current = (current + 1) % quotes.length;
+      qText.textContent = quotes[current].text;
+      qAuthor.textContent = '— ' + quotes[current].author;
+      qText.style.opacity = '1';
+    }, 500);
+  }
+
+  setInterval(rotateQuote, 6000);
+</script>
+</body>
+</html>
